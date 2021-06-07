@@ -9,14 +9,13 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import axios from "axios";
-import clsx from "clsx";
 import Drawer from "@material-ui/core/Drawer";
 import Button from "@material-ui/core/Button";
 import List from "@material-ui/core/List";
 import Divider from "@material-ui/core/Divider";
 import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
+import Link from "@material-ui/core/Link";
 import "./App.css";
 import TemporaryDrawer from "./test";
 
@@ -38,6 +37,40 @@ function App() {
   const [countriesData, setCountriesData] = useState([]);
   const classes = useStyles();
 
+  const [drawer, setDrawer] = React.useState(false);
+
+  const toggleDrawer = (drawer) => (event) => {
+    if (
+      event.type === "keydown" &&
+      (event.key === "Tab" || event.key === "Shift")
+    ) {
+      return;
+    }
+    setDrawer(drawer);
+  };
+
+  const list = (anchor) => (
+    <div
+      role="presentation"
+      onClick={toggleDrawer(false)}
+      onKeyDown={toggleDrawer(false)}
+    >
+      <List>
+        <ListItem button key={anchor}>
+          <ListItemText primary={anchor} />
+        </ListItem>
+      </List>
+      <Divider />
+      <List>
+        {["All mail", "Trash", "Spam"].map((text, index) => (
+          <ListItem button key={text}>
+            <ListItemText primary={text} />
+          </ListItem>
+        ))}
+      </List>
+    </div>
+  );
+
   const getCountriesWithAxios = async () => {
     const response = await axios.get(countriesURL);
     setCountriesData(response.data);
@@ -50,7 +83,9 @@ function App() {
 
   return (
     <>
-      <TemporaryDrawer />
+      <Drawer anchor={"right"} open={drawer} onClose={toggleDrawer(false)}>
+        {list("right")}
+      </Drawer>
       <Grid container>
         <Grid item xs={12}>
           <TableContainer component={Paper}>
@@ -78,7 +113,7 @@ function App() {
                 {countriesData.map((country) => (
                   <TableRow>
                     <TableCell component="th" scope="row">
-                      {country.name}
+                      <Link onClick={toggleDrawer(true)}>{country.name}</Link>
                     </TableCell>
                     <TableCell align="right">
                       <img src={country.flag} alt="country flag" width="32px" />
