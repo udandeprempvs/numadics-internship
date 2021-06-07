@@ -35,11 +35,12 @@ const useStyles = makeStyles({
 
 function App() {
   const [countriesData, setCountriesData] = useState([]);
+  const [drawer, setDrawer] = useState(false);
+  const [country, setCountry] = useState({});
+
   const classes = useStyles();
 
-  const [drawer, setDrawer] = React.useState(false);
-
-  const toggleDrawer = (drawer) => (event) => {
+  const toggleDrawer = (drawer, country) => (event) => {
     if (
       event.type === "keydown" &&
       (event.key === "Tab" || event.key === "Shift")
@@ -47,17 +48,18 @@ function App() {
       return;
     }
     setDrawer(drawer);
+    setCountry(country);
   };
 
-  const list = (anchor) => (
+  const list = (country) => (
     <div
       role="presentation"
-      onClick={toggleDrawer(false)}
-      onKeyDown={toggleDrawer(false)}
+      onClick={toggleDrawer(false, country)}
+      onKeyDown={toggleDrawer(false, country)}
     >
       <List>
-        <ListItem button key={anchor}>
-          <ListItemText primary={anchor} />
+        <ListItem button key={country.name}>
+          <ListItemText primary={country.name} />
         </ListItem>
       </List>
       <Divider />
@@ -83,8 +85,12 @@ function App() {
 
   return (
     <>
-      <Drawer anchor={"right"} open={drawer} onClose={toggleDrawer(false)}>
-        {list("right")}
+      <Drawer
+        anchor={"right"}
+        open={drawer}
+        onClose={toggleDrawer(false, country)}
+      >
+        {list(country)}
       </Drawer>
       <Grid container>
         <Grid item xs={12}>
@@ -113,7 +119,9 @@ function App() {
                 {countriesData.map((country) => (
                   <TableRow>
                     <TableCell component="th" scope="row">
-                      <Link onClick={toggleDrawer(true)}>{country.name}</Link>
+                      <Link onClick={toggleDrawer(true, country)}>
+                        {country.name}
+                      </Link>
                     </TableCell>
                     <TableCell align="right">
                       <img src={country.flag} alt="country flag" width="32px" />
