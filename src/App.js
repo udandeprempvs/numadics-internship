@@ -9,13 +9,28 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import axios from "axios";
+import clsx from "clsx";
+import Drawer from "@material-ui/core/Drawer";
+import Button from "@material-ui/core/Button";
+import List from "@material-ui/core/List";
+import Divider from "@material-ui/core/Divider";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
 import "./App.css";
+import TemporaryDrawer from "./test";
 
 const countriesURL = "https://restcountries.eu/rest/v2/all";
 
 const useStyles = makeStyles({
   table: {
     minWidth: 650,
+  },
+  list: {
+    width: 250,
+  },
+  fullList: {
+    width: "auto",
   },
 });
 
@@ -35,6 +50,7 @@ function App() {
 
   return (
     <>
+      <TemporaryDrawer />
       <Grid container>
         <Grid item xs={12}>
           <TableContainer component={Paper}>
