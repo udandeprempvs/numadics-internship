@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -10,26 +10,39 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import axios from "axios";
 import Drawer from "@material-ui/core/Drawer";
-import Button from "@material-ui/core/Button";
 import List from "@material-ui/core/List";
 import Divider from "@material-ui/core/Divider";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import Link from "@material-ui/core/Link";
 import "./App.css";
-import TemporaryDrawer from "./test";
 
 const countriesURL = "https://restcountries.eu/rest/v2/all";
 
+const StyledTableRow = withStyles((theme) => ({
+  root: {
+    "&:nth-of-type(odd)": {
+      backgroundColor: theme.palette.action.hover,
+    },
+  },
+}))(TableRow);
+
+const StyledTableCell = withStyles((theme) => ({
+  head: {
+    backgroundColor: theme.palette.common.black,
+    color: theme.palette.common.white,
+  },
+  body: {
+    fontSize: 14,
+  },
+}))(TableCell);
+
 const useStyles = makeStyles({
   table: {
-    minWidth: 650,
+    minWidth: 700,
   },
   list: {
-    width: 250,
-  },
-  fullList: {
-    width: "auto",
+    width: 300,
   },
 });
 
@@ -37,6 +50,7 @@ function App() {
   const [countriesData, setCountriesData] = useState([]);
   const [drawer, setDrawer] = useState(false);
   const [country, setCountry] = useState({});
+  //The below useStates were initialised since .map() function in the list was giving error for objects which have an array//
   const [border, setBorder] = useState([]);
   const [language, setLanguage] = useState([]);
   const [timezone, setTimezone] = useState([]);
@@ -67,7 +81,7 @@ function App() {
       onClick={toggleDrawer(false, country)}
       onKeyDown={toggleDrawer(false, country)}
     >
-      <List>
+      <List className={classes.list}>
         <ListItem>
           <h2>{country.name}</h2>
         </ListItem>
@@ -153,41 +167,47 @@ function App() {
       <Grid container>
         <Grid item xs={12}>
           <TableContainer component={Paper}>
-            <Table className={classes.table} aria-label="simple table">
+            <Table className={classes.table} aria-label="customized table">
               <TableHead>
                 <TableRow>
-                  <TableCell>
+                  <StyledTableCell>
                     <strong>Name</strong>
-                  </TableCell>
-                  <TableCell align="right">
+                  </StyledTableCell>
+                  <StyledTableCell align="right">
                     <strong>Flag</strong>
-                  </TableCell>
-                  <TableCell align="right">
+                  </StyledTableCell>
+                  <StyledTableCell align="right">
                     <strong>Capital</strong>
-                  </TableCell>
-                  <TableCell align="right">
+                  </StyledTableCell>
+                  <StyledTableCell align="right">
                     <strong>Population</strong>
-                  </TableCell>
-                  <TableCell align="right">
+                  </StyledTableCell>
+                  <StyledTableCell align="right">
                     <strong>Region</strong>
-                  </TableCell>
+                  </StyledTableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {countriesData.map((country) => (
-                  <TableRow>
-                    <TableCell component="th" scope="row">
+                  <StyledTableRow>
+                    <StyledTableCell>
                       <Link onClick={toggleDrawer(true, country)}>
                         {country.name}
                       </Link>
-                    </TableCell>
-                    <TableCell align="right">
+                    </StyledTableCell>
+                    <StyledTableCell align="right">
                       <img src={country.flag} alt="country flag" width="32px" />
-                    </TableCell>
-                    <TableCell align="right">{country.capital}</TableCell>
-                    <TableCell align="right">{country.population}</TableCell>
-                    <TableCell align="right">{country.region}</TableCell>
-                  </TableRow>
+                    </StyledTableCell>
+                    <StyledTableCell align="right">
+                      {country.capital}
+                    </StyledTableCell>
+                    <StyledTableCell align="right">
+                      {country.population}
+                    </StyledTableCell>
+                    <StyledTableCell align="right">
+                      {country.region}
+                    </StyledTableCell>
+                  </StyledTableRow>
                 ))}
               </TableBody>
             </Table>

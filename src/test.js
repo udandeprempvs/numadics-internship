@@ -1,5 +1,4 @@
 import React from "react";
-import clsx from "clsx";
 import Drawer from "@material-ui/core/Drawer";
 import Button from "@material-ui/core/Button";
 import List from "@material-ui/core/List";
