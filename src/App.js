@@ -37,6 +37,11 @@ function App() {
   const [countriesData, setCountriesData] = useState([]);
   const [drawer, setDrawer] = useState(false);
   const [country, setCountry] = useState({});
+  const [border, setBorder] = useState([]);
+  const [language, setLanguage] = useState([]);
+  const [timezone, setTimezone] = useState([]);
+  const [latlan, setLatlan] = useState([]);
+  const [currency, setCurrency] = useState([]);
 
   const classes = useStyles();
 
@@ -49,6 +54,11 @@ function App() {
     }
     setDrawer(drawer);
     setCountry(country);
+    setBorder(country.borders);
+    setLanguage(country.languages);
+    setTimezone(country.timezones);
+    setLatlan(country.latlng);
+    setCurrency(country.currencies);
   };
 
   const list = (country) => (
@@ -58,17 +68,65 @@ function App() {
       onKeyDown={toggleDrawer(false, country)}
     >
       <List>
-        <ListItem button key={country.name}>
-          <ListItemText primary={country.name} />
+        <ListItem>
+          <h2>{country.name}</h2>
         </ListItem>
-      </List>
-      <Divider />
-      <List>
-        {["All mail", "Trash", "Spam"].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemText primary={text} />
+        <Divider />
+        <ListItem>Capital : {country.capital}</ListItem>
+        <Divider />
+        <ListItem>Region : {country.region}</ListItem>
+        <Divider />
+        <ListItem>Subregion : {country.subregion}</ListItem>
+        <Divider />
+        <ListItem>Population : {country.population}</ListItem>
+        <Divider />
+        <ListItem>Area : {country.area} sq kms</ListItem>
+        <Divider />
+        <ListItem>
+          <ListItemText primary="Latitude and Longitude" />
+        </ListItem>
+        {latlan.map((val, index) => (
+          <ListItem key={index}>
+            <ListItemText secondary={val} />
           </ListItem>
         ))}
+        <Divider />
+        <ListItem>
+          <ListItemText primary="Timezones" />
+        </ListItem>
+        {timezone.map((val, index) => (
+          <ListItem key={index}>
+            <ListItemText secondary={val} />
+          </ListItem>
+        ))}
+        <Divider />
+        <ListItem>
+          <ListItemText primary="Borders" />
+        </ListItem>
+        {border.map((val, index) => (
+          <ListItem key={index}>
+            <ListItemText secondary={val} />
+          </ListItem>
+        ))}
+        <Divider />
+        <ListItem>
+          <ListItemText primary="Languages" />
+        </ListItem>
+        {language.map((val, index) => (
+          <ListItem key={index}>
+            <ListItemText secondary={val.name} />
+          </ListItem>
+        ))}
+        <Divider />
+        <ListItem>
+          <ListItemText primary="Currencies" />
+        </ListItem>
+        {currency.map((val, index) => (
+          <ListItem key={index}>
+            <ListItemText secondary={val.name} />
+          </ListItem>
+        ))}
+        <Divider />
       </List>
     </div>
   );
